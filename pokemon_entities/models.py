@@ -5,6 +5,8 @@ from datetime import datetime
 class Pokemon(models.Model):
     title = models.CharField(max_length=200)
     photo = models.ImageField(upload_to="pokemon", blank=True)
+    title_en = models.CharField(max_length=200, blank=True)
+    title_jp = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
 
     def __str__(self):
