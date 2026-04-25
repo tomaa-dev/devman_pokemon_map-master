@@ -64,7 +64,11 @@ def show_pokemon(request, pokemon_id):
         return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
-    for pokemon_entity in PokemonEntity.objects.filter(pokemon=pokemon):
+    for pokemon_entity in PokemonEntity.objects.filter(
+        pokemon=pokemon, 
+        appeared_at__lte=localtime(),
+        disappeared_at__gte=localtime(),
+    ):
         add_pokemon(
             folium_map, 
             pokemon_entity.lat,
@@ -76,6 +80,7 @@ def show_pokemon(request, pokemon_id):
         'pokemon_id': pokemon.id,
         'img_url': request.build_absolute_uri(pokemon.photo.url),
         'title_ru': pokemon.title,
+        'description': pokemon.description
     }
 
     return render(request, 'pokemon.html', context={
