@@ -77,11 +77,21 @@ def show_pokemon(request, pokemon_id):
         )
 
     previous_evolution = None
-    if pokemon.previous_evolution:
+    previous_pokemon = pokemon.previous_evolution
+    if previous_pokemon:
         previous_evolution = {
-            'pokemon_id': pokemon.previous_evolution.id,
-            'img_url': request.build_absolute_uri(pokemon.previous_evolution.photo.url),
-            'title_ru': pokemon.previous_evolution.title,
+            'pokemon_id': previous_pokemon.id,
+            'img_url': request.build_absolute_uri(previous_pokemon.photo.url),
+            'title_ru': previous_pokemon.title,
+        }
+
+    next_evolution = None
+    next_pokemon = pokemon.next_evolution.first()
+    if next_pokemon:
+        next_evolution = {
+            'pokemon_id': next_pokemon.id,
+            'img_url': request.build_absolute_uri(next_pokemon.photo.url),
+            'title_ru': next_pokemon.title,
         }
 
     pokemon_on_pokemon_page = {
@@ -91,7 +101,8 @@ def show_pokemon(request, pokemon_id):
         'title_en': pokemon.title_en,
         'title_jp': pokemon.title_jp,
         'description': pokemon.description,
-        'previous_evolution': previous_evolution
+        'previous_evolution': previous_evolution,
+        'next_evolution': next_evolution
     }
 
     return render(request, 'pokemon.html', context={

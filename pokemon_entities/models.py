@@ -12,6 +12,7 @@ class Pokemon(models.Model):
         'self',
         null=True,
         blank=True,
+        related_name='next_evolution',
         on_delete=models.SET_NULL
     )
 
